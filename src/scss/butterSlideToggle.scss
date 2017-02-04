@@ -1,0 +1,7 @@
+$butter-slide-toggle-duration: 500ms !default;
+$butter-slide-toggle-delay: 0 !default;
+$butter-slide-toggle-timing-function: ease;
+
+.butter-slide-toggle-transition {
+  transition: max-height #{$butter-slide-toggle-duration} #{$butter-slide-toggle-timing-function} #{$butter-slide-toggle-delay};
+}

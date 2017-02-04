@@ -21,7 +21,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       _classCallCheck(this, ButterSlideToggle);
 
-      console.log('constructor');
       this.element = element;
       this.$element = $(element);
       this.options = $.extend({}, ButterSlideToggle.defaults, options);
@@ -41,9 +40,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _init() {
         var $wrap = void 0,
             baseEl = this.element,
-            $baseEl = $(this.element);
+            $baseEl = $(this.element),
+            options = this.options;
 
-        $baseEl.wrap('<div class="better-slide-wrap" />');
+        $baseEl.wrap('<div class="butter-slide-wrap ' + options.transitionClass + '" />');
         $wrap = $baseEl.parent();
         this.$wrap = $wrap;
 
@@ -65,8 +65,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function _bindAnimationEndListener() {
         var $wrap = this.$wrap,
             $element = this.$element;
-        $wrap.on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function () {
+        $wrap.on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function (e) {
           if (!$.data($wrap[0], 'collapsed')) {
+            console.log(e);
             $wrap.css('max-height', 9999);
             $element.trigger('butterToggle.opened');
           } else {
@@ -88,20 +89,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             height = $wrap.outerHeight(),
             innerHeight = $(this.element).outerHeight(),
             settings = this.options;
-
         if ($.data(wrap, 'collapsed')) {
           // If closed, add inner height to content height
           $.data(wrap, 'collapsed', false);
           $wrap.css('max-height', innerHeight + height);
         } else {
-          // Disable transitions (!important required to inline this) & set max-height to content height
-          $wrap.css('transition', 'none !important').css('max-height', height);
+          // Disable transitions & set max-height to content height
+          $wrap.removeClass('butter-slide-toggle-transition').css('max-height', height);
 
           setTimeout(function () {
             // Enable & start transitions
             // 10ms timeout is necessary to make this work across browsers
             $.data(wrap, 'collapsed', true);
-            $wrap.css('transition', settings.slideSpeed + 'ms max-height').css('max-height', 0);
+            $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
+            // $wrap.css('transition', `max-height ${settings.duration}ms ${settings.timingFunction} ${settings.delay}ms`).css('max-height', 0);
           }, 10);
         }
       }
@@ -119,9 +120,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /**
      * Tells the plugin the length of the animation.
      * @option
-     * @type {number}
-     * @default 500
+     * @type {string}
+     * @default butter-slide-toggle-transition
      */
-    slideSpeed: 4000
+    transitionClass: 'butter-slide-toggle-transition'
   };
 }(jQuery);
