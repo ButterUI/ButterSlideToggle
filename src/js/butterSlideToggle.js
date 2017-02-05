@@ -42,8 +42,10 @@
       if ($baseEl.css('max-height') === '0') {
         // If max-height is 0, we assume start collapsed, may refactor to something else
         $.data($wrap[0], 'collapsed', true);
+        $wrap.attr('aria-expanded', false);
       } else {
         $.data($wrap[0], 'collapsed', false);
+        $wrap.attr('aria-expanded', true);
       }
 
       this._bindAnimationEndListener();
@@ -54,7 +56,6 @@
           $element = this.$element;
       $wrap.on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function(e) {
         if (!$.data($wrap[0], 'collapsed')) {
-          console.log(e);
           $wrap.css('max-height', 9999);
           $element.trigger('butterToggle.opened');
         } else {
@@ -76,6 +77,7 @@
       if ($.data(wrap, 'collapsed')) {
         // If closed, add inner height to content height
         $.data(wrap, 'collapsed', false);
+        $wrap.attr('aria-expanded', true);
         $wrap.css('max-height', innerHeight + height);
       } else {
         // Disable transitions & set max-height to content height
@@ -85,6 +87,7 @@
           // Enable & start transitions
           // 10ms timeout is necessary to make this work across browsers
           $.data(wrap, 'collapsed', true);
+          $wrap.attr('aria-expanded', false);
           $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
         }, 10);
       }
