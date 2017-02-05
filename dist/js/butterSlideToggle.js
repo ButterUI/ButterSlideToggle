@@ -24,6 +24,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.element = element;
       this.$element = $(element);
       this.options = $.extend({}, ButterSlideToggle.defaults, options);
+      this._collapsed = false;
 
       this._init();
     }
@@ -53,10 +54,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         if ($baseEl.css('max-height') === '0') {
           // If max-height is 0, we assume start collapsed, may refactor to something else
-          $.data($wrap[0], 'collapsed', true);
+          this._collapsed = true;
           $wrap.attr('aria-expanded', false);
         } else {
-          $.data($wrap[0], 'collapsed', false);
+          this._collapsed = false;
           $wrap.attr('aria-expanded', true);
         }
 
@@ -66,9 +67,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: '_bindAnimationEndListener',
       value: function _bindAnimationEndListener() {
         var $wrap = this.$wrap,
-            $element = this.$element;
+            $element = this.$element,
+            thisClass = this;
         $wrap.on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function (e) {
-          if (!$.data($wrap[0], 'collapsed')) {
+          if (!thisClass._collapsed) {
             $wrap.css('max-height', 9999);
             $element.trigger('butterToggle.opened');
           } else {
@@ -89,10 +91,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             wrap = $wrap[0],
             height = $wrap.outerHeight(),
             innerHeight = $(this.element).outerHeight(),
-            settings = this.options;
-        if ($.data(wrap, 'collapsed')) {
+            settings = this.options,
+            thisClass = this;
+
+        if (thisClass._collapsed) {
           // If closed, add inner height to content height
-          $.data(wrap, 'collapsed', false);
+          thisClass._collapsed = false;
           $wrap.attr('aria-expanded', true);
           $wrap.css('max-height', innerHeight + height);
         } else {
@@ -102,11 +106,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           setTimeout(function () {
             // Enable & start transitions
             // 10ms timeout is necessary to make this work across browsers
-            $.data(wrap, 'collapsed', true);
+            thisClass._collapsed = true;
             $wrap.attr('aria-expanded', false);
             $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
           }, 10);
         }
+      }
+
+      /**
+       * Public method to access state of the toggle
+       * @TODO: this doesn't seem to properly return the state of the _collapsed property, but the above code works to toggle
+       */
+
+    }, {
+      key: 'isCollapsed',
+      value: function isCollapsed() {
+        return this._collapsed;
       }
     }]);
 

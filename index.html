@@ -44,6 +44,8 @@
     $('.toggle-btn').click(function (e) {
       e.preventDefault();
       toggle.toggle();
+      console.log('isCollapsed: ' + toggle.isCollapsed());
+      console.log('_collapsed: ' + toggle._collapsed);
     });
     $toggle.on('butterToggle.closed', function() {
       console.log('toggle closed');
