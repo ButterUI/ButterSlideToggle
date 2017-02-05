@@ -98,7 +98,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           // If closed, add inner height to content height
           thisClass._collapsed = false;
           $wrap.attr('aria-expanded', true);
-          $wrap.css('max-height', innerHeight + height);
+          $wrap.css('max-height', innerHeight);
+          // $wrap.css('max-height', innerHeight + height);
         } else {
           // Disable transitions & set max-height to content height
           $wrap.removeClass('butter-slide-toggle-transition').css('max-height', height);

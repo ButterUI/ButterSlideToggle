@@ -82,6 +82,7 @@
         // If closed, add inner height to content height
         thisClass._collapsed = false;
         $wrap.attr('aria-expanded', true);
+        // TODO: determine if this is the right thing to do, adding both heights together, could this cause lag in accordion? for instance
         $wrap.css('max-height', innerHeight + height);
       } else {
         // Disable transitions & set max-height to content height
@@ -99,7 +100,7 @@
 
     /**
      * Public method to access state of the toggle
-     * @TODO: this doesn't seem to properly return the state of the _collapsed property, but the above code works to toggle
+     * TODO: this doesn't seem to properly return the state of the _collapsed property, but the above code works to toggle
      */
     isCollapsed() {
       return this._collapsed;
