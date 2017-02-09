@@ -59,6 +59,7 @@
       $wrap.on('transitionEnd webkitTransitionEnd transitionend oTransitionEnd msTransitionEnd', function(e) {
         if (!thisClass._collapsed) {
           $wrap.css('max-height', 9999);
+          // @TODO: this is getting triggered twice, but it's unclear
           $element.trigger('butterToggle.opened');
         } else {
           $element.trigger('butterToggle.closed');
@@ -73,6 +74,7 @@
     toggle() {
       let $wrap = this.$wrap,
           wrap = $wrap[0],
+          $element = this.$element,
           height = $wrap.outerHeight(),
           innerHeight = $(this.element).outerHeight(),
           settings = this.options,
@@ -80,14 +82,18 @@
 
       if (thisClass._collapsed) {
         // If closed, add inner height to content height
+        // TODO: determine if this is the right thing to do, adding both heights together, could this cause lag in accordion? for instance
+        $element.trigger('butterToggle.openStart');
+        $wrap.css('max-height', innerHeight + height);
         thisClass._collapsed = false;
         $wrap.attr('aria-expanded', true);
-        // TODO: determine if this is the right thing to do, adding both heights together, could this cause lag in accordion? for instance
-        $wrap.css('max-height', innerHeight + height);
       } else {
+        $element.trigger('butterToggle.closeStart');
         // Disable transitions & set max-height to content height
         $wrap.removeClass('butter-slide-toggle-transition').css('max-height', height);
 
+       // @TODO: think about implmentation, this will return true ONLY when closed, not turing transition,
+       // if the following are pulled out of the timeout we need to cancel the timeout
         setTimeout(function() {
           // Enable & start transitions
           // 10ms timeout is necessary to make this work across browsers
