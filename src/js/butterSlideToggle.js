@@ -1,9 +1,4 @@
-'use strict';
 
-!function($) {
-  /**
-   * ButterSlideToggle module.
-   */
   class ButterSlideToggle {
     /**
      * Creates a new instance of ButterSlideToggle.
@@ -114,7 +109,7 @@
   }
 
   // Bind to window
-  window.ButterSlideToggle = ButterSlideToggle;
+  // window.ButterSlideToggle = ButterSlideToggle;
 
   ButterSlideToggle.defaults = {
     /**
@@ -126,4 +121,3 @@
     transitionClass: 'butter-slide-toggle-transition'
   };
 
-}(jQuery);
