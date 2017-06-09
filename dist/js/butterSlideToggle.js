@@ -128,15 +128,28 @@ var ButterSlideToggle = function () {
 
         // @TODO: think about implmentation, this will return true ONLY when closed, not turing transition,
         // if the following are pulled out of the timeout we need to cancel the timeout
-        setTimeout(function () {
-          // Enable & start transitions
-          // 10ms timeout is necessary to make this work across browsers
+
+        // Skip an animation frame to ensure that max-height is applied in all browsers.
+        this.skipFrame(function () {
           thisClass._collapsed = true;
           $wrap.attr('aria-hidden', true);
           $wrap.attr('aria-expanded', false);
           $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
-        }, 10);
+        });
       }
+    }
+
+    /**
+     * Get the animation frame after the next animation frame.
+     * @param callback
+     */
+
+  }, {
+    key: 'skipFrame',
+    value: function skipFrame(callback) {
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(callback);
+      });
     }
 
     /**
