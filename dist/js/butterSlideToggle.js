@@ -71,11 +71,13 @@ var ButterSlideToggle = function () {
       });
 
       if (this.isCollapsed()) {
+        $wrap.attr('aria-hidden', true);
         $wrap.attr('aria-expanded', false);
         $wrap.css('max-height', 0);
       } else {
         this._collapsed = false;
         $wrap.attr('aria-expanded', true);
+        $wrap.attr('aria-hidden', false);
       }
 
       this._bindAnimationEndListener();
@@ -118,6 +120,7 @@ var ButterSlideToggle = function () {
         $wrap.css('max-height', innerHeight + height);
         thisClass._collapsed = false;
         $wrap.attr('aria-expanded', true);
+        $wrap.attr('aria-hidden', false);
       } else {
         $element.trigger('butterToggle.closeStart');
         // Disable transitions & set max-height to content height
@@ -129,6 +132,7 @@ var ButterSlideToggle = function () {
           // Enable & start transitions
           // 10ms timeout is necessary to make this work across browsers
           thisClass._collapsed = true;
+          $wrap.attr('aria-hidden', true);
           $wrap.attr('aria-expanded', false);
           $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
         }, 10);
@@ -160,6 +164,13 @@ ButterSlideToggle.defaults = {
    * @default butter-slide-toggle-transition
    */
   transitionClass: 'butter-slide-toggle-transition',
+
+  /**
+   * Determines if the toggle content should begin expanded or collapsed.
+   * @option
+   * @type {bool}
+   * @default false
+   */
   beginCollapsed: false
 };
 return ButterSlideToggle;}));

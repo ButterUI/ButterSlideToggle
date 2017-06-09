@@ -119,6 +119,13 @@
      * @default butter-slide-toggle-transition
      */
     transitionClass: 'butter-slide-toggle-transition',
+
+    /**
+     * Determines if the toggle content should begin expanded or collapsed.
+     * @option
+     * @type {bool}
+     * @default false
+     */
     beginCollapsed: false
   };
 
