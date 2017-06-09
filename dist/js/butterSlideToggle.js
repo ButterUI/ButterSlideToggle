@@ -41,7 +41,7 @@ var ButterSlideToggle = function () {
     this.element = element;
     this.$element = $(element);
     this.options = $.extend({}, ButterSlideToggle.defaults, options);
-    this._collapsed = false;
+    this._collapsed = this.options.beginCollapsed;
 
     this._init();
   }
@@ -69,10 +69,9 @@ var ButterSlideToggle = function () {
         'overflow': 'hidden'
       });
 
-      if ($baseEl.css('max-height') === '0') {
-        // If max-height is 0, we assume start collapsed, may refactor to something else
-        this._collapsed = true;
+      if (this.isCollapsed()) {
         $wrap.attr('aria-expanded', false);
+        $wrap.css('max-height', 0);
       } else {
         this._collapsed = false;
         $wrap.attr('aria-expanded', true);
@@ -106,11 +105,9 @@ var ButterSlideToggle = function () {
     key: 'toggle',
     value: function toggle() {
       var $wrap = this.$wrap,
-          wrap = $wrap[0],
           $element = this.$element,
           height = $wrap.outerHeight(),
           innerHeight = $(this.element).outerHeight(),
-          settings = this.options,
           thisClass = this;
 
       if (thisClass._collapsed) {
@@ -162,6 +159,7 @@ ButterSlideToggle.defaults = {
    * @type {string}
    * @default butter-slide-toggle-transition
    */
-  transitionClass: 'butter-slide-toggle-transition'
+  transitionClass: 'butter-slide-toggle-transition',
+  beginCollapsed: false
 };
 return ButterSlideToggle;}));

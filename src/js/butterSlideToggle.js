@@ -11,7 +11,7 @@
       this.element = element;
       this.$element = $(element);
       this.options = $.extend({}, ButterSlideToggle.defaults, options);
-      this._collapsed = false;
+      this._collapsed = this.options.beginCollapsed;
 
       this._init();
     }
@@ -35,13 +35,14 @@
         'overflow': 'hidden'
       });
 
-      if ($baseEl.css('max-height') === '0') {
-        // If max-height is 0, we assume start collapsed, may refactor to something else
-        this._collapsed = true;
+      if (this.isCollapsed()) {
+        $wrap.attr('aria-hidden', true);
         $wrap.attr('aria-expanded', false);
+        $wrap.css('max-height', 0);
       } else {
         this._collapsed = false;
         $wrap.attr('aria-expanded', true);
+        $wrap.attr('aria-hidden', false);
       }
 
       this._bindAnimationEndListener();
@@ -68,11 +69,9 @@
      */
     toggle() {
       let $wrap = this.$wrap,
-          wrap = $wrap[0],
           $element = this.$element,
           height = $wrap.outerHeight(),
           innerHeight = $(this.element).outerHeight(),
-          settings = this.options,
           thisClass = this;
 
       if (thisClass._collapsed) {
@@ -82,6 +81,7 @@
         $wrap.css('max-height', innerHeight + height);
         thisClass._collapsed = false;
         $wrap.attr('aria-expanded', true);
+        $wrap.attr('aria-hidden', false);
       } else {
         $element.trigger('butterToggle.closeStart');
         // Disable transitions & set max-height to content height
@@ -93,6 +93,7 @@
           // Enable & start transitions
           // 10ms timeout is necessary to make this work across browsers
           thisClass._collapsed = true;
+          $wrap.attr('aria-hidden', true);
           $wrap.attr('aria-expanded', false);
           $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
         }, 10);
@@ -118,6 +119,7 @@
      * @type {string}
      * @default butter-slide-toggle-transition
      */
-    transitionClass: 'butter-slide-toggle-transition'
+    transitionClass: 'butter-slide-toggle-transition',
+    beginCollapsed: false
   };
 
