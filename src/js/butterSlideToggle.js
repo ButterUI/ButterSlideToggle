@@ -102,7 +102,6 @@
 
     /**
      * Public method to access state of the toggle
-     * TODO: this doesn't seem to properly return the state of the _collapsed property, but the above code works to toggle
      */
     isCollapsed() {
       return this._collapsed;
