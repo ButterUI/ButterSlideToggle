@@ -5,3 +5,10 @@ $butter-slide-toggle-timing-function: ease;
 .butter-slide-toggle-transition {
   transition: max-height #{$butter-slide-toggle-duration} #{$butter-slide-toggle-timing-function} #{$butter-slide-toggle-delay};
 }
+
+.butter-slide-wrap {
+  &[aria-hidden="true"] {
+    transition: max-height #{$butter-slide-toggle-duration} #{$butter-slide-toggle-timing-function} #{$butter-slide-toggle-delay},
+      visibility 0s linear #{$butter-slide-toggle-duration};
+  }
+}

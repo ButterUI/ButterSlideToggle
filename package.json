@@ -1,6 +1,6 @@
 {
   "name": "butter-slide-toggle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "ButterSlideToggle is the Better Slide Toggle you wish you had!",
   "main": "dist/js/butterSlideToggle.js",
   "scripts": {

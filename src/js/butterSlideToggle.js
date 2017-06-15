@@ -38,11 +38,15 @@
       if (this.isCollapsed()) {
         $wrap.attr('aria-hidden', true);
         $wrap.attr('aria-expanded', false);
-        $wrap.css('max-height', 0);
+        $wrap.css({
+          maxHeight: 0,
+          visibility: 'hidden'
+        });
       } else {
         this._collapsed = false;
         $wrap.attr('aria-expanded', true);
         $wrap.attr('aria-hidden', false);
+        $wrap.css({visibility: 'visible'});
       }
 
       this._bindAnimationEndListener();
@@ -82,20 +86,24 @@
         thisClass._collapsed = false;
         $wrap.attr('aria-expanded', true);
         $wrap.attr('aria-hidden', false);
+        $wrap.css({
+          maxHeight: innerHeight + height,
+          visibility: 'visible'
+        });
       } else {
         $element.trigger('butterToggle.closeStart');
         // Disable transitions & set max-height to content height
         $wrap.removeClass('butter-slide-toggle-transition').css('max-height', height);
-
-       // @TODO: think about implmentation, this will return true ONLY when closed, not turing transition,
-       // if the following are pulled out of the timeout we need to cancel the timeout
 
         // Skip an animation frame to ensure that max-height is applied in all browsers.
         this.skipFrame(() => {
           thisClass._collapsed = true;
           $wrap.attr('aria-hidden', true);
           $wrap.attr('aria-expanded', false);
-          $wrap.addClass('butter-slide-toggle-transition').css('max-height', 0);
+          $wrap.addClass('butter-slide-toggle-transition').css({
+            maxHeight: 0,
+            visibility: 'hidden'
+          });
         });
       }
     }
