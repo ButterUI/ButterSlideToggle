@@ -22,13 +22,9 @@ gulp.task('serve', ['scripts'], function() {
 
 gulp.task("scripts", function () {
   return gulp.src("src/js/butterSlideToggle.js")
-    // .pipe(sourcemaps.init())
     .pipe(babel())
-    // .pipe(browserify({
-    //   debug : !gulp.env.production
-    // }))
-    .pipe(inject.wrap(`
-(function (root, factory) {
+    .pipe(inject.wrap(`(function (root, factory) {
+    root = root || window;
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['jquery'], function (jQuery) {
@@ -58,17 +54,14 @@ gulp.task('styles', function() {
   gulp.src('src/scss/butterSlideToggle.scss')
     .pipe(sourcemaps.init())
     .pipe(sass())
-    // Catch any SCSS errors and prevent them from crashing gulp
     .on('error', function (error) {
       console.error(error);
       this.emit('end');
     })
-    .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 9'))
+    .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 11'))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('dist/css/'))
-    .pipe(cleanCss({
-      compatibility: 'ie9'
-    }))
+    .pipe(cleanCss())
     .pipe(rename({
       extname: '.min.css'
     }))
