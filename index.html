@@ -35,17 +35,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script src="./dist/js/butterSlideToggle.js"></script>
   <script>
-    var $toggle = $('.toggle-me');
-    var toggle = new ButterSlideToggle($toggle[0]);
-    $('.toggle-btn').click(function (e) {
+    const toggleSection = document.querySelector('.toggle-me');
+    const slideToggle = new ButterSlideToggle(toggleSection);
+    document.querySelector('.toggle-btn').addEventListener('click', e => {
       e.preventDefault();
-      toggle.toggle();
+      slideToggle.toggle();
     });
-    $toggle.on('butterToggle.closed', function() {
-      console.log('toggle closed');
-    }).on('butterToggle.opened', function() {
-      console.log('toggle opened');
-    });
+
+    // TODO: fix event listeners to use vanilla js.
+    // toggleSection.on('butterToggle.closed', function() {
+    //   console.log('toggle closed');
+    // }).on('butterToggle.opened', function() {
+    //   console.log('toggle opened');
+    // });
 //  console.log(new ButterSlideToggle($toggle[0));
   </script>
 </body>
