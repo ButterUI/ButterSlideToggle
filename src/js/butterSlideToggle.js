@@ -1,4 +1,3 @@
-
 class ButterSlideToggle {
   /**
    * Creates a new instance of ButterSlideToggle.
@@ -9,7 +8,7 @@ class ButterSlideToggle {
    */
   constructor(element, options = {}) {
     this.element = element;
-    this.options = $.extend({}, ButterSlideToggle.defaults, options);
+    this.options = Object.assign({}, ButterSlideToggle.defaults, options);
     this._collapsed = this.options.beginCollapsed;
     this._events = {};
     this.events = [
@@ -30,34 +29,41 @@ class ButterSlideToggle {
     let baseEl = this.element,
       options = this.options;
 
-    // wrap = this.wrapElement(baseEl, 'div');
-    let toggleChildren = baseEl.innerHTML;
-    baseEl.innerHTML = `<div class="butter-slide-inner">${toggleChildren}</div>`;
-    baseEl.classList.add('butter-slide-wrap');
-    baseEl.classList.add(options.transitionClass);
-    baseEl.setAttribute('style', 'overflow: hidden;');
+    let createdWrapper = document.createElement('div');
+
+    this.wrapElement(baseEl, createdWrapper);
+    createdWrapper.classList.add('butter-slide-wrap', options.transitionClass);
+    createdWrapper.style.overflow = 'hidden';
 
     this.createEvents();
 
     if (this.isCollapsed()) {
-      baseEl.setAttribute('aria-hidden', true);
-      baseEl.setAttribute('aria-expanded', false);
-      baseEl.setAttribute('style', 'max-height: 0; visibility: hidden');
+      createdWrapper.setAttribute('aria-hidden', true);
+      createdWrapper.setAttribute('aria-expanded', false);
+      createdWrapper.style.maxHeight = '0px';
+      createdWrapper.style.visibility = 'hidden';
     } else {
       this._collapsed = false;
-      baseEl.setAttribute('aria-expanded', true);
-      baseEl.setAttribute('aria-hidden', false);
-      baseEl.setAttribute('style','visibility: visible');
+      createdWrapper.setAttribute('aria-expanded', true);
+      createdWrapper.setAttribute('aria-hidden', false);
+      createdWrapper.style.visibility = 'visible';
     }
 
-    this.inner = baseEl.children;
+    this.inner = baseEl.innerHTML;
     this._bindAnimationEndListener();
   }
 
+  /**
+   * Attaches the animation listener for the toggle.
+   * @function
+   * @private
+   */
   _bindAnimationEndListener() {
-    let wrap = this.element,
-      element = this.inner,
+    let element = this.element,
+      wrap = element.parentNode,
       thisClass = this;
+
+    console.log(wrap);
 
     [
       'transitionEnd',
@@ -67,50 +73,62 @@ class ButterSlideToggle {
       'msTransitionEnd'
     ].forEach((eventName) => {
       wrap.addEventListener(eventName, (e) => {
+        console.log('transition end');
         if (!thisClass._collapsed) {
-          element.setAttribute('style', 'max-height: 9999px;');
+          // wrap.setAttribute('style', 'max-height: 9999;');
+          wrap.style.maxHeight = '9999px';
           // @TODO: this is getting triggered twice, but it's unclear
-          this.triggerEvent(wrap, 'opened');
+          this.triggerEvent(element, 'opened');
         } else {
-          this.triggerEvent(wrap, 'closed');
+          this.triggerEvent(element, 'closed');
         }
       }, false);
     });
   }
 
   /**
-   * Toggles the target class on the target element. An event is fired from the original trigger depending on if the resultant state was "on" or "off".
+   * Toggles the target class on the target element. An event is fired from the
+   * original trigger depending on if the resultant state was "on" or "off".
    * @function
    */
   toggle() {
-    let wrap = this.element,
-      element = this.inner,
+    let element = this.element,
+      wrap = element.parentNode,
       height = this.getAbsoluteHeight(wrap),
       innerHeight = this.getAbsoluteHeight(element),
       thisClass = this;
 
+    console.log('is collapsed: ' + thisClass._collapsed);
+    console.log('visible height: ' + height);
+    console.log('inner height: ' + innerHeight);
 
     if (thisClass._collapsed) {
       // If closed, add inner height to content height
-      // TODO: determine if this is the right thing to do, adding both heights together, could this cause lag in accordion? for instance
-      this.triggerEvent(wrap, 'openStart');
-      element.setAttribute('style', `max-height: ${innerHeight + height}; visibility: visible`);
+      // TODO: determine if this is the right thing to do,
+      // adding both heights together, could this cause lag in accordion? for instance
+      this.triggerEvent(element, 'openStart');
+      // wrap.setAttribute('style', `max-height: ${innerHeight + height}; visibility: visible`);
+      wrap.style.maxHeight = innerHeight + height + 'px';
+      wrap.style.visibility = 'visible';
       thisClass._collapsed = false;
-      element.setAttribute('aria-expanded', true);
-      element.setAttribute('aria-hidden', false);
+      wrap.setAttribute('aria-expanded', true);
+      wrap.setAttribute('aria-hidden', false);
     } else {
-      this.triggerEvent(wrap, 'closeStart');
+      this.triggerEvent(element, 'closeStart');
       // Disable transitions & set max-height to content height
-      element.classList.remove('butter-slide-toggle-transition');
-      element.setAttribute('style', `max-height: ${height}`);
+      wrap.classList.remove('butter-slide-toggle-transition');
+      // wrap.setAttribute('style', `max-height: ${height}`);
+      wrap.style.maxHeight = height + 'px';
 
       // Skip an animation frame to ensure that max-height is applied in all browsers.
       this.skipFrame(() => {
         thisClass._collapsed = true;
-        element.setAttribute('aria-hidden', true);
-        element.setAttribute('aria-expanded', false);
-        element.classList.add('butter-slide-toggle-transition');
-        element.setAttribute('style', `max-height: 0; visibility: hidden`);
+        wrap.setAttribute('aria-hidden', true);
+        wrap.setAttribute('aria-expanded', false);
+        wrap.classList.add('butter-slide-toggle-transition');
+        // wrap.setAttribute('style', 'max-height: 0; visibility: hidden;');
+        wrap.style.maxHeight = '0px';
+        wrap.style.visibility = 'hidden';
       });
     }
   }
@@ -140,6 +158,7 @@ class ButterSlideToggle {
 
   triggerEvent(el, eventName) {
     let events = this._events;
+
     if (events[eventName]) {
       el.dispatchEvent(events[eventName]);
     }
@@ -164,11 +183,23 @@ class ButterSlideToggle {
     }
     return null;
   }
+
+  wrapElement(el, wrapper) {
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
+
+    return wrapper;
+  }
+
+  wrapContents(el, wrapper) {
+    el.prepend(wrapper);
+    while (wrapper.nextSibling) {
+      wrapper.append(wrapper.nextSibling);
+    }
+
+    return wrapper;
+  }
 }
-
-
-// Bind to window
-// window.ButterSlideToggle = ButterSlideToggle;
 
 ButterSlideToggle.defaults = {
   /**
