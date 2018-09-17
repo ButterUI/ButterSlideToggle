@@ -1,12 +1,12 @@
 {
   "name": "butter-slide-toggle",
   "description": "ButterSlideToggle is the Better Slide Toggle you wish you had!",
-  "main": "dist/js/butterSlideToggle.js",
+  "main": "dist/js/butter-slide-toggle.js",
   "authors": [
     "Anthony Simone <anthony.simone7@gmail.com",
     "Tanner Langley <tlangley141@gmail.com>"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "keywords": [
     "toggle"
   ],
