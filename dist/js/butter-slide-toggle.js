@@ -91,7 +91,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = "./src/js/index.js");
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -362,6 +362,30 @@ __webpack_require__.r(__webpack_exports__);
 
 window.ButterSlideToggle = _ButterSlideToggle__WEBPACK_IMPORTED_MODULE_0__["default"];
 /* harmony default export */ __webpack_exports__["default"] = (_ButterSlideToggle__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
+/***/ }),
+
+/***/ "./src/scss/style.scss":
+/*!*****************************!*\
+  !*** ./src/scss/style.scss ***!
+  \*****************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__.p + "../../dist/css/butter-slide-toggle.css";
+
+/***/ }),
+
+/***/ 0:
+/*!*****************************************************!*\
+  !*** multi ./src/js/index.js ./src/scss/style.scss ***!
+  \*****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(/*! /Users/anthonysimone/Sites/sandbox/butter-ui/ButterSlideToggle/src/js/index.js */"./src/js/index.js");
+module.exports = __webpack_require__(/*! /Users/anthonysimone/Sites/sandbox/butter-ui/ButterSlideToggle/src/scss/style.scss */"./src/scss/style.scss");
+
 
 /***/ })
 

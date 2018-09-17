@@ -1,0 +1,5 @@
+.butter-slide-toggle-transition {
+  transition: max-height 500ms ease 0ms; }
+
+.butter-slide-wrap[aria-hidden="true"] {
+  transition: max-height 500ms ease 0ms, visibility 0s linear 500ms; }

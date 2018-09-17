@@ -2,9 +2,9 @@
 
 The slide toggle is one of the simplest and most common web problems but ends up being one of the more difficult solutions to implement well with respect to performance and behavior. This is an effort to make a tool as simple to use as jQuery's `slideToggle` method, but way more performant. Butter Slide Toggle leverages CSS transitions, Javascript, and some trickery to bypass the complications of trying to transition height or max height manually to get the slide toggle effect you're looking for.
 
-## Installing
+## Installation
 
-You can get Butter Slide Toggle with either npm or bower. You can also manually include the main `butterSlideToggle.js` file as a script tag your project if you like.
+You can get Butter Slide Toggle with either npm or bower. You can also manually include the main `dist/js/butter-slide-toggle.js` file as a script tag your project if you like.
 
 NPM
 
@@ -19,27 +19,25 @@ bower install butter-slide-toggle --save
 Manual
 
 ```html
-<script src="path/to/js/dir/jquery.js"></script>
-<script src="path/to/js/dir/butterSlideToggle.js"></script>
-<link href="path/to/css/dir/butterSlideToggle.css" rel="stylesheet" type="text/css">
+<script src="path/to/js/dir/butter-slide-toggle.js"></script>
+<link href="path/to/css/dir/butter-slide-toggle.css" rel="stylesheet" type="text/css">
 ```
 
 ### Prerequisites
 
-Butter Slide Toggle is dependent on jQuery for now. You'll need to be including it in some way in your project.
+Butter Slide Toggle is plain Javascript and has no dependencies.
 
 ### Getting Started
 
-Once you've included Butter Slide Toggle in your project it is very simple to use. Behavior is a little different from jQuery's slide toggle in that you'll first need to initialize your toggle before you can use it. The simplest implementation looks something like the following.
+Once you've included Butter Slide Toggle in your project it is very simple to use. Behavior is a little different from jQuery's slide toggle in that you'll first need to initialize your toggle before you can use it. The simplest implementation in plain javascript looks something like the following.
 
 ```js
-var $button = $('.toggle-button'),
-    $toggle = $('.toggle-me'),
-    toggle = new ButterSlideToggle($toggle[0]);
+const contentSelection = document.querySelector('.toggle-content'),
+  contentToggle = new ButterSlideToggle(contentSelection);
 
-$button.on('click', function(e) {
+document.querySelector('.toggle-button').addEventListener('click', e => {
   e.preventDefault();
-  toggle.toggle();
+  contentToggle.toggle();
 });
 ```
 Once a Butter Slide Toggle is initialized, you can use the `toggle()` method to trigger the toggle. Simple!
@@ -111,6 +109,14 @@ Triggered immediately before the open transition begins.
 
 Triggered immediately before the close transition begins.
 
+## Development Build
+
+Butter Slide Toggle uses Webpack to compile a development build and compiles script and css assets to the `dist` folder. The project is set up with Browser Sync to view the demo locally. You can view the demo locally by cloning the repo and running the following.
+
+```bash
+npm install
+npm run dev
+```
 
 ## Authors
 
