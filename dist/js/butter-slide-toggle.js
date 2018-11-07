@@ -182,18 +182,16 @@ function () {
       var element = this.element,
           wrap = element.parentNode,
           thisClass = this;
-      console.log(wrap);
-      ['transitionEnd', 'webkitTransitionEnd', 'transitionend', 'oTransitionEnd', 'msTransitionEnd'].forEach(function (eventName) {
+      ['transitionend'].forEach(function (eventName) {
         wrap.addEventListener(eventName, function (e) {
-          console.log('transition end');
+          if (e.propertyName === 'max-height') {
+            if (!thisClass._collapsed) {
+              wrap.style.maxHeight = '9999px'; // @TODO: this is getting triggered twice, but it's unclear
 
-          if (!thisClass._collapsed) {
-            // wrap.setAttribute('style', 'max-height: 9999;');
-            wrap.style.maxHeight = '9999px'; // @TODO: this is getting triggered twice, but it's unclear
-
-            _this.triggerEvent(element, 'opened');
-          } else {
-            _this.triggerEvent(element, 'closed');
+              _this.triggerEvent(element, 'opened');
+            } else {
+              _this.triggerEvent(element, 'closed');
+            }
           }
         }, false);
       });
@@ -211,10 +209,9 @@ function () {
           wrap = element.parentNode,
           height = this.getAbsoluteHeight(wrap),
           innerHeight = this.getAbsoluteHeight(element),
-          thisClass = this;
-      console.log('is collapsed: ' + thisClass._collapsed);
-      console.log('visible height: ' + height);
-      console.log('inner height: ' + innerHeight);
+          thisClass = this; // console.log('is collapsed: ' + thisClass._collapsed);
+      // console.log('visible height: ' + height);
+      // console.log('inner height: ' + innerHeight);
 
       if (thisClass._collapsed) {
         // If closed, add inner height to content height

@@ -42,11 +42,13 @@
     });
 
     // TODO: fix event listeners to use vanilla js.
-    // toggleSection.on('butterToggle.closed', function() {
-    //   console.log('toggle closed');
-    // }).on('butterToggle.opened', function() {
-    //   console.log('toggle opened');
-    // });
+    toggleSection.addEventListener('butterToggle.closed', function() {
+      console.log('toggled closed');
+    });
+
+    toggleSection.addEventListener('butterToggle.opened', function() {
+      console.log('toggled opened');
+    });
 
   </script>
 </body>

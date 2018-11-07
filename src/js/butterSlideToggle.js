@@ -63,24 +63,16 @@ class ButterSlideToggle {
       wrap = element.parentNode,
       thisClass = this;
 
-    console.log(wrap);
-
-    [
-      'transitionEnd',
-      'webkitTransitionEnd',
-      'transitionend',
-      'oTransitionEnd',
-      'msTransitionEnd'
-    ].forEach((eventName) => {
+    ['transitionend'].forEach((eventName) => {
       wrap.addEventListener(eventName, (e) => {
-        console.log('transition end');
-        if (!thisClass._collapsed) {
-          // wrap.setAttribute('style', 'max-height: 9999;');
-          wrap.style.maxHeight = '9999px';
-          // @TODO: this is getting triggered twice, but it's unclear
-          this.triggerEvent(element, 'opened');
-        } else {
-          this.triggerEvent(element, 'closed');
+        if (e.propertyName === 'max-height') {
+          if (!thisClass._collapsed) {
+            wrap.style.maxHeight = '9999px';
+            // @TODO: this is getting triggered twice, but it's unclear
+            this.triggerEvent(element, 'opened');
+          } else {
+            this.triggerEvent(element, 'closed');
+          }
         }
       }, false);
     });
@@ -98,9 +90,9 @@ class ButterSlideToggle {
       innerHeight = this.getAbsoluteHeight(element),
       thisClass = this;
 
-    console.log('is collapsed: ' + thisClass._collapsed);
-    console.log('visible height: ' + height);
-    console.log('inner height: ' + innerHeight);
+    // console.log('is collapsed: ' + thisClass._collapsed);
+    // console.log('visible height: ' + height);
+    // console.log('inner height: ' + innerHeight);
 
     if (thisClass._collapsed) {
       // If closed, add inner height to content height
